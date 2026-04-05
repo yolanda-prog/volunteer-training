@@ -452,14 +452,23 @@
     button:hover,
     .button-link:hover { transform: translateY(-1px); }
 
-.btn-primary {
-  width: 100%;
-  background: #2f9b57;
-  color: #fff;
-  box-shadow: none;
+.btn-primary,
+.continue-paypal-btn,
+.download-receipt-btn {
+  display: block;
+  width: 260px;
+  max-width: 100%;
+  min-height: 46px;
+  padding: 0 22px;
+  margin: 24px auto 0;
+  border: 0;
   border-radius: 8px;
-  min-height: 48px;
+  background: #2fa052;
+  color: #fff;
   font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
