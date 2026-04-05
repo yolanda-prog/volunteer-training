@@ -5,164 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Volunteer Training Hub</title>
   <style>
-    * { box-sizing: border-box; }
-
     :root {
-      --blue: #1f5fbf;
-      --blue-dark: #184f9f;
-      --green: #218a55;
-      --green-dark: #1a7749;
-      --text: #27303f;
-      --muted: #6a7482;
-      --border: #d7dbe2;
-      --bg: #f3f3f3;
+      --brand-blue: #1367c8;
+      --brand-blue-dark: #0d4f9d;
+      --brand-blue-light: #eaf3ff;
+      --text: #1f2a37;
+      --muted: #5b6675;
+      --border: #d8dee8;
+      --bg: #f3f6fa;
       --card: #ffffff;
+      --success: #0f9d58;
       --error: #d93025;
-      --success: #18864b;
+      --shadow: 0 10px 28px rgba(18, 53, 91, 0.08);
+      --radius: 18px;
     }
+
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, #eef3f9 0%, #f5f8fc 100%);
       color: var(--text);
+      min-height: 100vh;
+    }
+
+    .site-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-dark));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .brand-title {
+      font-size: clamp(1.2rem, 2vw, 1.55rem);
+      font-weight: 700;
+      letter-spacing: 0.1px;
+    }
+
+    .brand-subtitle {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-top: 2px;
+    }
+
+    .content {
+      width: min(1180px, calc(100% - 24px));
+      margin: 24px auto 36px;
+      flex: 1;
     }
 
     .page { display: none; }
     .page.active { display: block; }
 
-    .site-header {
-      background: #fff;
-      border-bottom: 1px solid #e2e2e2;
-    }
-
-    .header-inner {
-      width: min(1360px, 100%);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 22px;
-      gap: 18px;
-    }
-
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .logo-mark {
-      width: 56px;
-      height: 44px;
-      position: relative;
-      flex: 0 0 auto;
-    }
-
-    .logo-mark span {
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      border-radius: 18px 18px 0 18px;
-      transform: rotate(45deg);
-      top: 8px;
-    }
-
-    .logo-mark .a { left: 0; background: #e14d49; }
-    .logo-mark .b { left: 14px; background: #e3bf42; }
-    .logo-mark .c { left: 28px; background: #67a65e; }
-    .logo-mark .d { left: 14px; top: 22px; background: #6ca6ba; }
-
-    .brand-title {
-      font-size: clamp(1.2rem, 2vw, 1.55rem);
-      font-weight: 700;
-      color: #214c89;
-      line-height: 1.1;
-    }
-
-    .brand-subtitle {
-      font-size: 0.82rem;
-      color: #5e6875;
-      margin-top: 4px;
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      flex-wrap: nowrap;
-      color: #303844;
-      font-size: 0.98rem;
-    }
-
-    .nav-link {
-      position: relative;
-      font-weight: 700;
-      cursor: default;
-      white-space: nowrap;
-    }
-
-    .nav-link.active::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -12px;
-      height: 3px;
-      background: #214c89;
-      border-radius: 999px;
-    }
-
-    .header-icons {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: 1.4rem;
-      color: #2e3541;
-    }
-
-    .hero-banner {
-      height: 205px;
-      background:
-        linear-gradient(rgba(242, 247, 250, 0.75), rgba(242, 247, 250, 0.75)),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="260" viewBox="0 0 1600 260"><rect fill="%23d8e8ef" width="1600" height="260"/><circle cx="170" cy="140" r="105" fill="%23bdd4dc"/><circle cx="1410" cy="115" r="110" fill="%23c8dde4"/><circle cx="820" cy="128" r="130" fill="%23d2e3e9"/><rect x="530" y="100" width="530" height="70" rx="35" fill="%23c7d7de" opacity="0.65"/></svg>') center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .hero-banner h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 3rem);
-      color: #202834;
-      font-weight: 700;
-    }
-
-    .hero-banner p {
-      margin: 12px 0 0;
-      font-size: clamp(1rem, 1.8vw, 1.18rem);
-      color: #36404d;
-    }
-
-    .content-wrap {
-      width: min(1320px, calc(100% - 30px));
-      margin: 26px auto 40px;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.8rem, 3.2vw, 2.45rem);
-      font-weight: 700;
-      color: #262e39;
-      margin: 8px 0 24px;
-    }
-
     .steps-wrap {
-      margin: 0 auto 22px;
-      width: min(860px, 100%);
+      margin: 0 auto 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
     }
 
     .steps {
@@ -170,720 +108,600 @@
       justify-content: center;
       align-items: flex-start;
       gap: 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 2px;
     }
 
     .step-item {
       position: relative;
-      flex: 1;
-      min-width: 90px;
+      min-width: 120px;
       text-align: center;
+      color: #98a2b3;
       font-weight: 700;
-      color: #b3b7be;
+      flex: 1;
     }
 
     .step-item:not(:last-child)::after {
       content: "";
       position: absolute;
-      top: 16px;
-      left: 56%;
-      width: 88%;
+      top: 18px;
+      left: 58%;
+      width: 84%;
       height: 5px;
-      background: #d3d3d3;
+      background: #d7dce4;
       border-radius: 999px;
       z-index: 0;
     }
 
     .step-item.done:not(:last-child)::after,
     .step-item.active:not(:last-child)::after {
-      background: #18a33c;
+      background: #1ea94b;
     }
 
     .step-circle {
       position: relative;
       z-index: 1;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
+      margin: 0 auto 8px;
       display: grid;
       place-items: center;
-      margin: 0 auto 8px;
-      background: #cfd0d4;
-      color: #fff;
-      font-size: 0.96rem;
+      background: #d7dce4;
+      color: white;
+      font-size: 1rem;
       font-weight: 700;
     }
 
     .step-item.active .step-circle,
     .step-item.done .step-circle {
-      background: #18a33c;
+      background: #1ea94b;
     }
 
     .step-label {
-      color: #1e232c;
-      font-size: 0.96rem;
-      line-height: 1.2;
+      font-size: 0.98rem;
+      line-height: 1.25;
+      color: #1f2a37;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(245, 250, 255, 0.92), rgba(235, 244, 255, 0.92)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 1200 260"><rect fill="%23dfeeff" width="1200" height="260"/><circle cx="120" cy="140" r="90" fill="%23cfe3fb"/><circle cx="1060" cy="120" r="100" fill="%23d8e8fb"/><circle cx="620" cy="60" r="60" fill="%23e7f1ff"/></svg>') center/cover no-repeat;
+      border: 1px solid #d9e6fb;
+      border-radius: 28px;
+      padding: 34px 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.12;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 780px;
+      line-height: 1.6;
     }
 
     .feedback {
       display: none;
-      margin: 8px 0 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      line-height: 1.45;
-      font-size: 0.94rem;
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      line-height: 1.55;
       font-weight: 700;
     }
 
     .feedback.error {
       display: block;
-      background: #fff3f2;
-      border: 1px solid #efbbb6;
+      background: #fff4f3;
+      border: 1px solid #f3c1bc;
       color: var(--error);
     }
 
     .feedback.success {
       display: block;
-      background: #eef9f1;
-      border: 1px solid #b9dfc4;
-      color: var(--success);
+      background: #eefaf3;
+      border: 1px solid #bfe7cd;
+      color: #18794e;
     }
 
-    .course-grid {
+    .tiles {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 20px;
-      align-items: stretch;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
     }
 
     .course-card {
-      background: #fff;
-      border: 1px solid #d6d6d6;
-      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
       overflow: hidden;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
       display: flex;
       flex-direction: column;
+      min-height: 100%;
     }
 
     .course-image {
-      aspect-ratio: 1.55 / 1;
+      min-height: 178px;
+      padding: 18px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      color: #ffffff;
+      font-size: 2.2rem;
+      font-weight: 700;
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      border-bottom: 1px solid #d8d8d8;
     }
 
-    .img-1 { background-image: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="450" viewBox="0 0 700 450"><rect fill="%23dce4ea" width="700" height="450"/><circle cx="118" cy="210" r="88" fill="%23c8d6df"/><rect x="180" y="145" width="190" height="165" rx="14" fill="%23eff3f6"/><circle cx="300" cy="235" r="38" fill="%2387b893"/><rect x="405" y="150" width="180" height="150" rx="16" fill="%23f3efe8"/></svg>'); }
-    .img-2 { background-image: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="450" viewBox="0 0 700 450"><rect fill="%23dddfe2" width="700" height="450"/><rect x="90" y="125" width="180" height="170" rx="18" fill="%23ccd8e3"/><circle cx="370" cy="210" r="82" fill="%23d9d0bd"/><rect x="430" y="135" width="170" height="170" rx="18" fill="%23edf1f4"/></svg>'); }
-    .img-3 { background-image: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="450" viewBox="0 0 700 450"><rect fill="%23e7e3d8" width="700" height="450"/><circle cx="195" cy="210" r="88" fill="%23f0c54e"/><rect x="295" y="130" width="200" height="190" rx="18" fill="%23f7f2e6"/><circle cx="560" cy="210" r="72" fill="%23dfc5b7"/></svg>'); }
-    .img-4 { background-image: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="450" viewBox="0 0 700 450"><rect fill="%23e6e6e1" width="700" height="450"/><circle cx="180" cy="215" r="86" fill="%23efcc48"/><rect x="290" y="130" width="190" height="180" rx="18" fill="%23edf1f5"/><circle cx="560" cy="210" r="75" fill="%23e6c0b8"/></svg>'); }
-    .img-5 { background-image: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="450" viewBox="0 0 700 450"><rect fill="%23e0dfd8" width="700" height="450"/><rect x="80" y="135" width="220" height="170" rx="18" fill="%23eadbb3"/><circle cx="450" cy="210" r="84" fill="%23d4dddf"/></svg>'); }
-    .img-6 { background-image: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="450" viewBox="0 0 700 450"><rect fill="%23e5e1dc" width="700" height="450"/><circle cx="190" cy="220" r="82" fill="%23cfd4db"/><rect x="315" y="135" width="220" height="170" rx="18" fill="%23efddd8"/></svg>'); }
+    .img-1 { background: linear-gradient(135deg, rgba(14,99,190,0.2), rgba(0,48,135,0.3)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="300" viewBox="0 0 600 300"><rect fill="%23dcecff" width="600" height="300"/><circle cx="140" cy="140" r="85" fill="%23c6ddfa"/><rect x="210" y="85" width="180" height="135" rx="20" fill="%23eef6ff"/><rect x="255" y="112" width="90" height="80" rx="10" fill="%23bdd7f7"/></svg>') center/cover; }
+    .img-2 { background: linear-gradient(135deg, rgba(46,166,106,0.18), rgba(19,103,200,0.28)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="300" viewBox="0 0 600 300"><rect fill="%23e6f5ea" width="600" height="300"/><circle cx="130" cy="145" r="78" fill="%23cfead6"/><rect x="205" y="82" width="200" height="140" rx="24" fill="%23f7fffa"/><circle cx="305" cy="145" r="42" fill="%2398d0ab"/></svg>') center/cover; }
+    .img-3 { background: linear-gradient(135deg, rgba(255,170,0,0.15), rgba(19,103,200,0.25)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="300" viewBox="0 0 600 300"><rect fill="%23fff4dc" width="600" height="300"/><circle cx="470" cy="138" r="86" fill="%23ffe1a0"/><rect x="130" y="86" width="200" height="136" rx="22" fill="%23fffdfa"/><rect x="170" y="115" width="118" height="26" rx="8" fill="%23ffd375"/><rect x="170" y="152" width="90" height="26" rx="8" fill="%23ffe39d"/></svg>') center/cover; }
+    .img-4 { background: linear-gradient(135deg, rgba(237,103,103,0.18), rgba(19,103,200,0.24)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="300" viewBox="0 0 600 300"><rect fill="%23ffe9e9" width="600" height="300"/><circle cx="160" cy="150" r="78" fill="%23ffd0d0"/><rect x="250" y="84" width="180" height="132" rx="22" fill="%23fff8f8"/><path d="M300 120h80v60h-80z" fill="%23ffb0b0"/></svg>') center/cover; }
 
     .course-body {
-      padding: 14px 18px 16px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
       flex: 1;
     }
 
     .course-title {
-      font-size: 1.06rem;
+      font-size: 1.28rem;
       font-weight: 700;
-      line-height: 1.25;
-      color: #1f3760;
+      line-height: 1.35;
+      margin-bottom: 2px;
     }
 
     .course-location {
-      font-size: 0.94rem;
-      color: #7a808b;
-      line-height: 1.3;
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 700;
     }
 
-    .course-meta {
-      font-size: 0.94rem;
-      line-height: 1.45;
-      color: #313844;
-    }
-
-    .course-bottom {
+    .detail-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-top: 2px;
-      font-size: 0.95rem;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 1rem;
+    }
+
+    .detail-icon {
+      width: 26px;
+      flex: 0 0 26px;
+      text-align: center;
     }
 
     .course-price {
-      font-size: 1.06rem;
+      font-size: 1.5rem;
       font-weight: 700;
-      color: #252d37;
-      white-space: nowrap;
+      margin-top: 2px;
+      color: var(--brand-blue-dark);
     }
 
-    .btn-enrol {
-      margin-top: 10px;
-      width: 100%;
-      background: linear-gradient(180deg, #2d955d, #257a4d);
-      color: #fff;
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    button,
+    .button-link {
       border: 0;
-      border-radius: 8px;
-      padding: 12px 14px;
+      border-radius: 999px;
+      padding: 13px 24px;
       font-family: inherit;
-      font-size: 0.98rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
     }
 
-    .btn-enrol:hover { background: linear-gradient(180deg, #268553, #206e44); }
+    button:hover,
+    .button-link:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1d73d6, #1367c8);
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(19, 103, 200, 0.2);
+    }
+
+    .btn-primary:hover { background: linear-gradient(135deg, #0f63c2, #0d4f9d); }
+
+    .btn-secondary {
+      background: #eef4fb;
+      color: var(--brand-blue-dark);
+      border: 1px solid #d7e6fa;
+    }
 
     .panel {
-      background: #fff;
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
       overflow: hidden;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
 
     .panel-header {
-      background: #ffffff;
-      border-bottom: 1px solid #e3e3e3;
-      padding: 18px 22px;
+      background: linear-gradient(135deg, #fafdff, #eef5ff);
+      padding: 24px 26px;
+      border-bottom: 1px solid var(--border);
     }
 
     .panel-header h2 {
-      margin: 0 0 6px;
-      font-size: 1.6rem;
-      color: #202733;
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
     }
 
     .panel-header p {
       margin: 0;
-      color: #5f6876;
-      font-size: 0.96rem;
-      line-height: 1.45;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 1rem;
     }
 
     .panel-body {
-      padding: 22px;
+      padding: 26px;
     }
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 16px;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
     .summary-card {
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      background: #fafafa;
+      background: #fbfdff;
+      border-radius: 18px;
+      padding: 16px;
     }
 
     .summary-label {
-      font-size: 0.82rem;
-      color: #78808d;
+      font-size: 0.92rem;
+      color: var(--muted);
       margin-bottom: 4px;
     }
 
     .summary-value {
-      font-size: 0.98rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      line-height: 1.35;
-      color: #232a35;
+      line-height: 1.45;
     }
 
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px 16px;
+      gap: 18px 16px;
     }
 
     .field.full { grid-column: 1 / -1; }
 
     .field label {
       display: block;
-      font-size: 0.95rem;
       font-weight: 700;
-      margin-bottom: 6px;
-      color: #222a34;
+      margin-bottom: 8px;
+      font-size: 1rem;
     }
 
     input,
     select {
       width: 100%;
-      min-height: 46px;
-      border: 1px solid #cfd4dc;
-      border-radius: 10px;
-      padding: 10px 12px;
+      min-height: 52px;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 14px;
       font-family: inherit;
-      font-size: 0.98rem;
-      color: #222a34;
+      font-size: 1rem;
+      color: var(--text);
       background: #fff;
       outline: none;
     }
 
     input:focus,
     select:focus {
-      border-color: #80aee6;
-      box-shadow: 0 0 0 3px rgba(31,95,191,0.09);
+      border-color: #7db3ef;
+      box-shadow: 0 0 0 4px rgba(19, 103, 200, 0.1);
     }
 
     .error-input {
-      border-color: #e49b95 !important;
+      border-color: #f1a29b !important;
       background: #fff9f8;
-      box-shadow: 0 0 0 3px rgba(217,48,37,0.08);
+      box-shadow: 0 0 0 4px rgba(217, 48, 37, 0.08);
     }
-
-    .field .feedback { margin-top: 6px; margin-bottom: 0; }
 
     .dob-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
 
     .info-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       margin-top: 8px;
-      border: 1px solid #d4e1f3;
-      background: #eff5fd;
-      color: #29538f;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .info-box {
-      display: none;
-      margin-top: 8px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: #f5f8fc;
-      border: 1px solid #d9e2ef;
-      color: #384252;
-      font-size: 0.92rem;
+      padding: 9px 12px;
+      background: var(--brand-blue-light);
+      color: var(--brand-blue-dark);
+      border-radius: 12px;
+      font-size: 0.93rem;
       line-height: 1.45;
-    }
-
-    .payment-options {
-      display: grid;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .payment-option {
-      border: 1px solid #a9a9a9;
-      border-radius: 8px;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
       cursor: pointer;
-      min-height: 68px;
+      border: 1px solid #d6e6fc;
+      width: fit-content;
     }
 
-    .payment-option input[type="radio"] {
-      width: 22px;
-      height: 22px;
-      min-height: 22px;
-      margin: 0 10px 0 0;
-      accent-color: var(--blue);
-      flex: 0 0 auto;
+    .info-box,
+    .code-note {
+      display: none;
+      margin-bottom: 16px;
+      background: #edf6ff;
+      border: 1px solid #d0e5fb;
+      color: var(--text);
+      border-radius: 16px;
+      padding: 13px 15px;
+      line-height: 1.55;
+      font-size: 0.97rem;
     }
 
-    .payment-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.12rem;
-      font-weight: 700;
-      color: #111;
-    }
-
-    .payment-icon {
-      flex: 0 0 auto;
-      min-width: 86px;
-      text-align: right;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #111;
-      opacity: 0.9;
-    }
-
-    .payment-option.selected {
-      border-color: #7aa7df;
-      box-shadow: 0 0 0 3px rgba(31,95,191,0.08);
-      background: #fbfdff;
-    }
+    .info-box { margin-top: 10px; margin-bottom: 0; }
 
     .checkboxes {
       display: grid;
-      gap: 10px;
+      gap: 12px;
+      margin-top: 4px;
     }
 
     .checkbox-item {
       display: flex;
-      gap: 10px;
       align-items: flex-start;
-      border: 1px solid #d8dde5;
-      border-radius: 10px;
-      background: #fafafa;
-      padding: 12px 14px;
-      font-size: 0.95rem;
-      line-height: 1.4;
-      color: #29313c;
+      gap: 10px;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fbfdff;
     }
 
     .checkbox-item input {
-      width: 18px;
-      min-height: 18px;
-      margin-top: 1px;
-      accent-color: var(--blue);
-      flex: 0 0 auto;
+      width: 20px;
+      min-height: 20px;
+      margin-top: 2px;
+      accent-color: var(--brand-blue);
     }
 
-    .actions-center {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-      border: 0;
-      border-radius: 999px;
-      padding: 12px 28px;
-      font-family: inherit;
-      font-size: 0.98rem;
-      font-weight: 700;
-      cursor: pointer;
-      min-height: 48px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(180deg, #2b78d6, #1c62c2);
-      color: #fff;
-    }
-
-    .btn-primary:hover { background: linear-gradient(180deg, #246fcf, #1a58b2); }
-
-    .btn-secondary {
-      background: #eef3fa;
-      color: #255291;
-      border: 1px solid #d8e2f2;
-    }
-
-    .paypal-shell {
-      width: min(760px, 100%);
+    .paypal-card {
+      width: min(680px, 100%);
       margin: 0 auto;
       background: #fff;
-      border: 1px solid #d7dbe2;
-      border-radius: 18px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
       overflow: hidden;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
 
     .paypal-head {
-      background: linear-gradient(180deg, #1c5fbf, #1549a8);
-      color: #fff;
-      padding: 28px 30px 24px;
+      padding: 26px 30px;
+      background: linear-gradient(135deg, #0e63be, #003087);
+      color: white;
     }
 
     .paypal-logo {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 700;
-      line-height: 1;
+      letter-spacing: 0.4px;
     }
 
     .paypal-sub {
-      margin-top: 14px;
-      font-size: 1rem;
-      line-height: 1.35;
+      margin-top: 8px;
+      opacity: 0.95;
+      font-size: 1.05rem;
     }
 
     .paypal-body {
-      padding: 26px 30px 30px;
-      background: #fff;
+      padding: 30px;
+      background: #f9fbff;
+    }
+
+    .email-code-box {
+      width: min(460px, 100%);
+      margin: 0 auto;
+      text-align: center;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .email-code-box h3 {
+      margin: 0 0 8px;
+      font-size: 1.55rem;
+    }
+
+    .email-code-box p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.55;
     }
 
     .loading-page {
-      min-height: 300px;
       display: flex;
       justify-content: center;
       align-items: center;
+      min-height: 360px;
     }
 
     .loading-card {
-      width: min(420px, 100%);
-      background: #fff;
-      border: 1px solid #d7dbe2;
-      border-radius: 16px;
+      width: min(460px, 100%);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 34px 28px;
       text-align: center;
-      padding: 28px 22px;
     }
 
     .spinner {
-      width: 56px;
-      height: 56px;
-      margin: 0 auto 16px;
-      border: 5px solid #dce6f5;
-      border-top-color: var(--blue);
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
       border-radius: 50%;
+      border: 6px solid #dbe9fb;
+      border-top-color: var(--brand-blue);
       animation: spin 0.9s linear infinite;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
     .loading-card h3 {
       margin: 0 0 8px;
-      font-size: 1.35rem;
+      font-size: 1.55rem;
     }
 
     .loading-card p {
       margin: 0;
-      color: #677180;
-      font-size: 0.96rem;
+      color: var(--muted);
+      line-height: 1.55;
     }
-
-    .code-banner-wrap {
-      display: flex;
-      justify-content: center;
-      margin: 0 0 12px;
-    }
-
-    .code-banner {
-      width: min(520px, calc(100% - 24px));
-      background: #fff;
-      border: 1px solid #d2d7df;
-      border-radius: 18px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    }
-
-    .code-banner-left {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .code-app {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      border: 1px solid #d5d8de;
-      background: #f6f7f9;
-      display: grid;
-      place-items: center;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #4b5563;
-      flex: 0 0 auto;
-    }
-
-    .code-banner-title {
-      font-size: 0.96rem;
-      font-weight: 700;
-      color: #161d27;
-      margin-bottom: 2px;
-    }
-
-    .code-banner-text {
-      font-size: 0.98rem;
-      line-height: 1.35;
-      color: #1f2732;
-      word-break: break-word;
-    }
-
-    .code-banner-time {
-      font-size: 0.88rem;
-      color: #6d7683;
-      white-space: nowrap;
-      padding-top: 2px;
-    }
-
-    .code-box {
-      width: min(310px, 100%);
-      margin: 16px auto 6px;
-      border: 1px solid #d7dbe2;
-      border-radius: 12px;
-      background: #fff;
-      padding: 18px 20px 22px;
-    }
-
-    .code-box h3 {
-      margin: 0 0 12px;
-      font-size: 1.1rem;
-      color: #202733;
-    }
-
-    .code-helper {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: #111826;
-      margin-bottom: 8px;
-    }
-
-    .resend-link {
-      margin-top: 16px;
-      color: #1d5cc0;
-      font-size: 0.96rem;
-      font-weight: 700;
-      background: none;
-      border: 0;
-      padding: 0;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .resend-link:hover { text-decoration: underline; }
 
     .payment-review {
-      border: 1px solid #d7dbe2;
-      border-radius: 12px;
-      background: #fff;
-      padding: 14px 18px;
-      margin-bottom: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 8px;
     }
 
     .payment-row {
       display: flex;
       justify-content: space-between;
-      gap: 14px;
+      gap: 16px;
+      align-items: flex-start;
       padding: 12px 0;
-      border-bottom: 1px solid #eceff4;
-      font-size: 0.98rem;
+      border-bottom: 1px solid #ecf1f7;
+      font-size: 1rem;
     }
 
     .payment-row:last-child { border-bottom: 0; }
-    .payment-row span:first-child { color: #68717f; }
-    .payment-row strong { text-align: right; color: #1e2530; }
+
+    .payment-row span:first-child { color: var(--muted); }
+    .payment-row strong { text-align: right; }
 
     .success-wrap {
       text-align: center;
-      padding: 10px 0 4px;
+      padding: 18px 0 4px;
     }
 
     .success-icon {
-      width: 88px;
-      height: 88px;
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 18px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      margin: 0 auto 16px;
-      background: linear-gradient(180deg, #28a960, #148548);
-      color: #fff;
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 2.2rem;
+      color: white;
+      background: linear-gradient(135deg, #2ca26b, #0f9d58);
+      box-shadow: 0 10px 24px rgba(15, 157, 88, 0.22);
     }
 
     .success-wrap h2 {
       margin: 0 0 10px;
-      font-size: 1.7rem;
-      color: #212832;
+      font-size: clamp(1.7rem, 3.4vw, 2.05rem);
     }
 
     .success-wrap p {
-      margin: 0 auto 18px;
+      margin: 0 auto 22px;
+      color: var(--muted);
+      line-height: 1.6;
       max-width: 620px;
-      font-size: 1rem;
-      color: #616a77;
-      line-height: 1.55;
+      font-size: 1.02rem;
     }
 
     .receipt-note {
-      text-align: center;
-      color: #69727f;
-      font-size: 0.94rem;
+      color: var(--muted);
+      font-size: 0.95rem;
       margin-top: 10px;
+      text-align: center;
     }
 
     .site-footer {
       text-align: center;
-      color: #7b8490;
-      font-size: 0.9rem;
       padding: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
     }
 
-    @media (max-width: 1180px) {
-      .course-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 980px) {
+      .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    @media (max-width: 900px) {
-      .course-grid,
+    @media (max-width: 860px) {
+      .summary-grid,
       .form-grid,
-      .summary-grid { grid-template-columns: 1fr; }
-      .header-inner { flex-wrap: wrap; }
-      .header-nav { gap: 18px; }
-      .dob-grid { grid-template-columns: 1fr; }
-      .step-item:not(:last-child)::after { width: 76%; left: 62%; }
-    }
+      .tiles {
+        grid-template-columns: 1fr;
+      }
 
-    @media (max-width: 640px) {
-      .course-grid { grid-template-columns: 1fr; }
-      .hero-banner { height: 180px; }
-      .header-inner { padding: 12px 14px; }
-      .content-wrap { width: min(100%, calc(100% - 18px)); }
-      .paypal-head, .paypal-body, .panel-body, .panel-header { padding-left: 16px; padding-right: 16px; }
-      .step-label { font-size: 0.85rem; }
-      .step-item:not(:last-child)::after { width: 58%; left: 72%; }
+      .dob-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .step-item {
+        min-width: 96px;
+      }
+
+      .step-item:not(:last-child)::after {
+        width: 70%;
+        left: 64%;
+      }
     }
   </style>
 </head>
 <body>
   <div class="site-shell">
-    <header class="site-header">
-      <div class="header-inner">
-        <div class="logo-wrap">
-          <div class="logo-mark" aria-hidden="true">
-            <span class="a"></span><span class="b"></span><span class="c"></span><span class="d"></span>
-          </div>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand-wrap">
+          <div class="brand-badge">V</div>
           <div>
             <div class="brand-title">Volunteer Training Hub</div>
+            <div class="brand-subtitle">Mock website for classroom use. Not a real business.</div>
           </div>
-        </div>
-
-        <nav class="header-nav" aria-label="Main navigation">
-          <div class="nav-link active">Home</div>
-          <div class="nav-link">Courses</div>
-          <div class="nav-link">Contact us</div>
-        </nav>
-
-        <div class="header-icons" aria-hidden="true">
-          <span>🇦🇺</span>
-          <span>☰</span>
         </div>
       </div>
     </header>
 
-    <section class="hero-banner">
-      <div>
-        <h1>Popular Volunteer Training Courses</h1>
-      </div>
-    </section>
-
-    <main class="content-wrap">
+    <main class="content">
       <div class="steps-wrap">
-        <div class="steps">
+        <div class="steps" id="stepsBar">
           <div class="step-item active" data-step="1">
             <div class="step-circle">1</div>
             <div class="step-label">Choose course</div>
@@ -894,77 +712,86 @@
           </div>
           <div class="step-item" data-step="3">
             <div class="step-circle">3</div>
-            <div class="step-label">Payment</div>
+            <div class="step-label">PayPal</div>
           </div>
           <div class="step-item" data-step="4">
             <div class="step-circle">4</div>
+            <div class="step-label">Payment</div>
+          </div>
+          <div class="step-item" data-step="5">
+            <div class="step-circle">5</div>
             <div class="step-label">Done</div>
           </div>
         </div>
       </div>
 
       <section class="page active" id="homePage">
-        <div class="section-title">Popular Volunteer Training Courses</div>
+        <div class="hero">
+          <h1>Popular Volunteer Training Courses</h1>
+          <p>
+            Read the course information carefully and choose the correct training.
+            Shani needs to enrol in the <strong>First Aid Training</strong> course.
+          </p>
+        </div>
+
         <div class="feedback" id="courseFeedback"></div>
 
-        <div class="course-grid">
+        <div class="tiles">
           <article class="course-card">
-            <div class="course-image img-1"></div>
+            <div class="course-image img-1">❤️</div>
             <div class="course-body">
               <div class="course-title">CPR Refresher</div>
               <div class="course-location">Bankstown, NSW</div>
-              <div class="course-meta">Thu, 9 Apr 2026</div>
-              <div class="course-bottom">
-                <div class="course-meta">1:00 pm - 4:00 pm</div>
-                <div class="course-price">$45</div>
+              <div class="detail-row"><div class="detail-icon">📅</div><div>Thu, 9 Apr 2026</div></div>
+              <div class="detail-row"><div class="detail-icon">⏰</div><div>9:00 am – 12:00 pm</div></div>
+              <div class="detail-row"><div class="detail-icon">💲</div><div class="course-price">$87.00</div></div>
+              <div class="button-row">
+                <button class="btn-primary" type="button" onclick="wrongCourse()">Enrol now</button>
               </div>
-               <button class="btn-enrol" type="button" onclick="wrongCourse()">Enrol now</button>
             </div>
           </article>
 
           <article class="course-card">
-            <div class="course-image img-2"></div>
+            <div class="course-image img-2">🩹</div>
             <div class="course-body">
               <div class="course-title">First Aid Training</div>
               <div class="course-location">Cabramatta, NSW</div>
-              <div class="course-meta">Fri, 10 Apr 2026</div>
-              <div class="course-bottom">
-                <div class="course-meta">9:00 am - 12:00 pm</div>
-                <div class="course-price">$75</div>
+              <div class="detail-row"><div class="detail-icon">📅</div><div>Fri, 10 Apr 2026</div></div>
+              <div class="detail-row"><div class="detail-icon">⏰</div><div>9:00 am – 12:00 pm</div></div>
+              <div class="detail-row"><div class="detail-icon">💲</div><div class="course-price">$87.00</div></div>
+              <div class="button-row">
+                <button class="btn-primary" type="button" onclick="goToPage('enrolPage')">Enrol now</button>
               </div>
-              <button class="btn-enrol" type="button" onclick="goToPage('enrolPage')">Enrol now</button>
             </div>
           </article>
 
           <article class="course-card">
-            <div class="course-image img-3"></div>
-            <div class="course-body">
-              <div class="course-title">Food Safety for Volunteers</div>
-              <div class="course-location">Fairfield, NSW</div>
-              <div class="course-meta">Sat, 11 Apr 2026</div>
-              <div class="course-bottom">
-                <div class="course-meta">9:00 am - 12:00 pm</div>
-                <div class="course-price">$65</div>
-              </div>
-              <button class="btn-enrol" type="button" onclick="wrongCourse()">Enrol now</button>
-            </div>
-          </article>
-
-          <article class="course-card">
-            <div class="course-image img-4"></div>
+            <div class="course-image img-3">💬</div>
             <div class="course-body">
               <div class="course-title">Communication Skills for Volunteers</div>
-              <div class="course-location">Liverpool, NSW</div>
-              <div class="course-meta">Tue, 14 Apr 2026</div>
-              <div class="course-bottom">
-                <div class="course-meta">1:00 pm - 4:00 pm</div>
-                <div class="course-price">Free</div>
+              <div class="course-location">Fairfield, NSW</div>
+              <div class="detail-row"><div class="detail-icon">📅</div><div>Sat, 11 Apr 2026</div></div>
+              <div class="detail-row"><div class="detail-icon">⏰</div><div>9:00 am – 12:00 pm</div></div>
+              <div class="detail-row"><div class="detail-icon">💲</div><div class="course-price">$87.00</div></div>
+              <div class="button-row">
+                <button class="btn-primary" type="button" onclick="wrongCourse()">Enrol now</button>
               </div>
-              <button class="btn-enrol" type="button" onclick="wrongCourse()">Enrol now</button>
             </div>
           </article>
 
-      
+          <article class="course-card">
+            <div class="course-image img-4">🍽️</div>
+            <div class="course-body">
+              <div class="course-title">Food Safety for Volunteers</div>
+              <div class="course-location">Liverpool, NSW</div>
+              <div class="detail-row"><div class="detail-icon">📅</div><div>Tue, 14 Apr 2026</div></div>
+              <div class="detail-row"><div class="detail-icon">⏰</div><div>9:00 am – 12:00 pm</div></div>
+              <div class="detail-row"><div class="detail-icon">💲</div><div class="course-price">$87.00</div></div>
+              <div class="button-row">
+                <button class="btn-primary" type="button" onclick="wrongCourse()">Enrol now</button>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -972,7 +799,7 @@
         <div class="panel">
           <div class="panel-header">
             <h2>Training enrolment form</h2>
-            <p>Read the instructions carefully before you continue.</p>
+            <p>Please enter Shani’s details exactly. Read the instructions carefully before you continue.</p>
           </div>
           <div class="panel-body">
             <div class="summary-grid">
@@ -986,103 +813,72 @@
               </div>
               <div class="summary-card">
                 <div class="summary-label">Date &amp; Time</div>
-                <div class="summary-value">Fri, 10 Apr 2026<br>9:00 am - 12:00 pm</div>
+                <div class="summary-value">Fri, 10 Apr 2026<br>9:00 am – 12:00 pm</div>
               </div>
               <div class="summary-card">
                 <div class="summary-label">Price</div>
-                <div class="summary-value">$75</div>
+                <div class="summary-value">$87.00</div>
               </div>
             </div>
 
-            <form novalidate>
+            <div class="feedback" id="formFeedback"></div>
+
+            <form id="enrolForm" novalidate>
               <div class="form-grid">
-                <div class="field" id="field-firstName">
+                <div class="field">
                   <label for="firstName">First name</label>
                   <input id="firstName" type="text" autocomplete="off" />
-                  <div class="feedback" id="feedback-firstName"></div>
                 </div>
 
-                <div class="field" id="field-lastName">
+                <div class="field">
                   <label for="lastName">Last name</label>
                   <input id="lastName" type="text" autocomplete="off" />
-                  <div class="feedback" id="feedback-lastName"></div>
                 </div>
 
-                <div class="field full" id="field-dob">
+                <div class="field full">
                   <label>Date of birth</label>
                   <div class="dob-grid">
                     <select id="dobDay"><option value="">Day</option></select>
                     <select id="dobMonth"><option value="">Month</option></select>
                     <select id="dobYear"><option value="">Year</option></select>
                   </div>
-                  <div class="feedback" id="feedback-dob"></div>
                 </div>
 
-                <div class="field" id="field-email1">
+                <div class="field">
                   <label for="email1">Email address</label>
                   <input id="email1" type="email" autocomplete="off" />
-                  <div class="feedback" id="feedback-email1"></div>
                 </div>
 
-                <div class="field" id="field-email2">
+                <div class="field">
                   <label for="email2">Enter email address again</label>
                   <input id="email2" type="email" autocomplete="off" />
-                  <div class="feedback" id="feedback-email2"></div>
                 </div>
 
-                <div class="field" id="field-phone">
+                <div class="field">
                   <label for="phone">Mobile phone number</label>
                   <input id="phone" type="text" autocomplete="off" />
-                  <div class="feedback" id="feedback-phone"></div>
                 </div>
 
-                <div class="field" id="field-usi">
+                <div class="field">
                   <label for="usi">USI number</label>
                   <input id="usi" type="text" autocomplete="off" />
                   <button class="info-pill" type="button" onclick="toggleUSIInfo()">ℹ️ What is a USI?</button>
                   <div class="info-box" id="usiInfo">USI = Unique Student Identifier. You need a USI to get your certificate.</div>
-                  <div class="feedback" id="feedback-usi"></div>
                 </div>
 
-                <div class="field full" id="field-paymentMethod">
-                  <label>Payment method</label>
-                  <div class="payment-options" id="paymentOptions">
-                    <label class="payment-option" for="pay-card">
-                      <div class="payment-left">
-                        <input type="radio" name="paymentMethod" id="pay-card" value="card" />
-                        <span>Card</span>
-                      </div>
-                      <div class="payment-icon">▭</div>
-                    </label>
-
-                    <label class="payment-option" for="pay-apple">
-                      <div class="payment-left">
-                        <input type="radio" name="paymentMethod" id="pay-apple" value="applepay" />
-                        <span>Apple Pay</span>
-                      </div>
-                      <div class="payment-icon"> Pay</div>
-                    </label>
-
-                    <label class="payment-option" for="pay-google">
-                      <div class="payment-left">
-                        <input type="radio" name="paymentMethod" id="pay-google" value="googlepay" />
-                        <span>Google Pay</span>
-                      </div>
-                      <div class="payment-icon">G Pay</div>
-                    </label>
-
-                    <label class="payment-option" for="pay-paypal">
-                      <div class="payment-left">
-                        <input type="radio" name="paymentMethod" id="pay-paypal" value="paypal" />
-                        <span>PayPal</span>
-                      </div>
-                      <div class="payment-icon">PP</div>
-                    </label>
-                  </div>
-                  <div class="feedback" id="feedback-paymentMethod"></div>
+                <div class="field full">
+                  <label for="paymentMethod">Payment method</label>
+                  <select id="paymentMethod">
+                    <option value="">Select payment method</option>
+                    <option value="card">Credit / Debit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="applepay">Apple Pay</option>
+                    <option value="googlepay">Google Pay</option>
+                    <option value="bank">Bank Transfer</option>
+                  </select>
                 </div>
 
-                <div class="field full" id="field-checks">
+                <div class="field full">
                   <label>Course agreement</label>
                   <div class="checkboxes">
                     <label class="checkbox-item">
@@ -1094,11 +890,10 @@
                       <span>I agree to the course rules and privacy policy.</span>
                     </label>
                   </div>
-                  <div class="feedback" id="feedback-checks"></div>
                 </div>
               </div>
 
-              <div class="actions-center">
+              <div class="centered-actions">
                 <button class="btn-primary" type="button" onclick="validateEnrolment()">Continue to PayPal</button>
               </div>
             </form>
@@ -1110,39 +905,62 @@
         <div class="loading-page">
           <div class="loading-card">
             <div class="spinner"></div>
-            <h3>Loading payment</h3>
+            <h3>Loading PayPal</h3>
             <p>Please wait a moment...</p>
           </div>
         </div>
       </section>
 
       <section class="page" id="paypalLoginPage">
-        <div class="paypal-shell">
+        <div class="paypal-card">
           <div class="paypal-head">
             <div class="paypal-logo">PayPal</div>
             <div class="paypal-sub">Log in to continue your payment</div>
           </div>
           <div class="paypal-body">
-            <div class="field full" id="field-paypalEmail">
-              <label for="paypalEmail">Email</label>
-              <input id="paypalEmail" type="email" autocomplete="off" />
-              <div class="feedback" id="feedback-paypalEmail"></div>
+            <div class="feedback" id="paypalLoginFeedback"></div>
+            <div class="form-grid">
+              <div class="field full">
+                <label for="paypalEmail">Email</label>
+                <input id="paypalEmail" type="email" autocomplete="off" />
+              </div>
+              <div class="field full">
+                <label for="paypalPassword">Password</label>
+                <input id="paypalPassword" type="password" autocomplete="off" />
+              </div>
             </div>
-
-            <div class="field full" id="field-paypalPassword" style="margin-top: 14px;">
-              <label for="paypalPassword">Password</label>
-              <input id="paypalPassword" type="password" autocomplete="off" />
-              <div class="feedback" id="feedback-paypalPassword"></div>
-            </div>
-
-            <div class="actions-center">
+            <div class="centered-actions">
               <button class="btn-primary" type="button" onclick="validatePayPalLogin()">Log In</button>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="page" id="loadingAfterLoginPage">
+      <section class="page" id="paypalCodePage">
+        <div class="paypal-card">
+          <div class="paypal-head">
+            <div class="paypal-logo">PayPal</div>
+            <div class="paypal-sub">Check your email to continue</div>
+          </div>
+          <div class="paypal-body">
+            <div class="code-note" id="codeNote" style="display:block;">Email note: Your 6-digit code is <strong>482761</strong>.</div>
+            <div class="email-code-box">
+              <h3>Email verification</h3>
+              <p>Enter the 6-digit code sent to Shani’s email address.</p>
+              <div class="feedback" id="codeFeedback"></div>
+              <div class="field full">
+                <label for="emailCode">6-digit code</label>
+                <input id="emailCode" type="text" maxlength="6" autocomplete="off" />
+              </div>
+              <div class="centered-actions">
+                <button class="btn-primary" type="button" onclick="validateEmailCode()">Verify code</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="loadingToPaymentPage">
         <div class="loading-page">
           <div class="loading-card">
             <div class="spinner"></div>
@@ -1152,46 +970,8 @@
         </div>
       </section>
 
-      <section class="page" id="paypalCodePage">
-        <div class="code-banner-wrap">
-          <div class="code-banner" id="codeBanner">
-            <div class="code-banner-left">
-              <div class="code-app">VTH</div>
-              <div>
-                <div class="code-banner-title">Volunteer Training Hub</div>
-                <div class="code-banner-text">The code to verify your email is <strong id="liveCodeText">482761</strong>.</div>
-              </div>
-            </div>
-            <div class="code-banner-time">now</div>
-          </div>
-        </div>
-
-        <div class="paypal-shell">
-          <div class="paypal-head">
-            <div class="paypal-logo">PayPal</div>
-            <div class="paypal-sub">Check your email to continue</div>
-          </div>
-          <div class="paypal-body">
-            <div class="code-box">
-              <h3>Verify email address</h3>
-              <div class="code-helper">Enter security code</div>
-              <div class="field full" id="field-emailCode">
-                <input id="emailCode" type="text" maxlength="6" autocomplete="off" />
-                <div class="feedback" id="feedback-emailCode"></div>
-              </div>
-
-              <div class="actions-center" style="margin-top: 16px; justify-content: flex-start;">
-                <button class="btn-primary" type="button" onclick="validateEmailCode()">Continue</button>
-              </div>
-
-              <button class="resend-link" type="button" onclick="resendCode()">Resend code</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="page" id="paypalPaymentPage">
-        <div class="paypal-shell">
+        <div class="paypal-card">
           <div class="paypal-head">
             <div class="paypal-logo">PayPal</div>
             <div class="paypal-sub">Review your payment before you continue</div>
@@ -1200,11 +980,11 @@
             <div class="payment-review">
               <div class="payment-row"><span>Course</span><strong>First Aid Training</strong></div>
               <div class="payment-row"><span>Organisation</span><strong>Volunteer Training Hub</strong></div>
-              <div class="payment-row"><span>Date &amp; Time</span><strong>Fri, 10 Apr 2026<br>9:00 am - 12:00 pm</strong></div>
-              <div class="payment-row"><span>Pay with</span><strong>PayPal</strong></div>
-              <div class="payment-row"><span>Total</span><strong>$75</strong></div>
+              <div class="payment-row"><span>Date &amp; Time</span><strong>Fri, 10 Apr 2026<br>9:00 am – 12:00 pm</strong></div>
+              <div class="payment-row"><span>Pay with</span><strong>Visa ending in 2456</strong></div>
+              <div class="payment-row"><span>Total</span><strong>$87.00</strong></div>
             </div>
-            <div class="actions-center">
+            <div class="centered-actions">
               <button class="btn-primary" type="button" onclick="completePayment()">Complete Payment</button>
             </div>
           </div>
@@ -1217,12 +997,16 @@
             <div class="success-wrap">
               <div class="success-icon">✓</div>
               <h2>Payment successful</h2>
-              <p>Thank you for your payment. </p>
+              <p>
+                Thank you for your payment. Shani’s PayPal payment has been received,
+                and her place in the <strong>First Aid Training</strong> course is now confirmed.
+              </p>
             </div>
-            <div class="actions-center">
+            <div class="centered-actions">
               <button class="btn-primary" type="button" onclick="downloadReceipt()">Download Receipt</button>
               <button class="btn-secondary" type="button" onclick="goToPage('homePage')">Return to Home Page</button>
             </div>
+            <div class="receipt-note">A confirmation email has been sent to shani.nk98@gmail.com.</div>
           </div>
         </div>
       </section>
@@ -1237,20 +1021,20 @@
       enrolPage: 2,
       loadingToLoginPage: 3,
       paypalLoginPage: 3,
-      loadingAfterLoginPage: 3,
       paypalCodePage: 3,
-      paypalPaymentPage: 3,
-      successPage: 4
+      loadingToPaymentPage: 4,
+      paypalPaymentPage: 4,
+      successPage: 5
     };
 
-    const pageOrder = ['homePage', 'enrolPage', 'loadingToLoginPage', 'paypalLoginPage', 'loadingAfterLoginPage', 'paypalCodePage', 'paypalPaymentPage', 'successPage'];
+    const pageOrder = ['homePage', 'enrolPage', 'loadingToLoginPage', 'paypalLoginPage', 'paypalCodePage', 'loadingToPaymentPage', 'paypalPaymentPage', 'successPage'];
     let loadingTimer = null;
-    let liveCode = '482761';
 
     function populateDOB() {
       const day = document.getElementById('dobDay');
       const month = document.getElementById('dobMonth');
       const year = document.getElementById('dobYear');
+
       for (let i = 1; i <= 31; i++) {
         const value = String(i).padStart(2, '0');
         day.innerHTML += `<option value="${value}">${value}</option>`;
@@ -1294,57 +1078,58 @@
       }
 
       if (pageId === 'loadingToLoginPage') {
-        loadingTimer = setTimeout(() => showPage('paypalLoginPage', true), 2000);
+        loadingTimer = setTimeout(() => {
+          showPage('paypalLoginPage', true);
+        }, 2000);
       }
-      if (pageId === 'loadingAfterLoginPage') {
-        loadingTimer = setTimeout(() => showPage('paypalCodePage', true), 2000);
+
+      if (pageId === 'loadingToPaymentPage') {
+        loadingTimer = setTimeout(() => {
+          showPage('paypalPaymentPage', true);
+        }, 2000);
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function clearAllFeedback() {
-      document.querySelectorAll('.feedback').forEach(box => {
-        box.textContent = '';
-        box.className = 'feedback';
-      });
-      document.querySelectorAll('input, select').forEach(el => el.classList.remove('error-input'));
-    }
-
-    function showInlineFeedback(id, message) {
-      const box = document.getElementById(id);
-      if (!box) return;
-      box.textContent = message;
-      box.className = 'feedback error';
-    }
-
-    function markError(id) {
-      const element = document.getElementById(id);
-      if (element) element.classList.add('error-input');
-    }
-
-    function clearHomeFeedback() {
-      const box = document.getElementById('courseFeedback');
-      box.textContent = '';
-      box.className = 'feedback';
-    }
-
     function goToPage(pageId) {
-      clearAllFeedback();
-      clearHomeFeedback();
+      clearFeedback('courseFeedback');
+      clearFeedback('formFeedback');
+      clearFeedback('paypalLoginFeedback');
+      clearFeedback('codeFeedback');
       showPage(pageId, true);
     }
 
     function wrongCourse() {
-      const box = document.getElementById('courseFeedback');
-      box.textContent = 'This is not the course Shani needs. Please enrol in the First Aid Course.';
-      box.className = 'feedback error';
+      showFeedback('courseFeedback', 'This is not the course Shani needs. Please choose another course.', 'error');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showFeedback(id, message, type) {
+      const box = document.getElementById(id);
+      box.textContent = message;
+      box.className = `feedback ${type}`;
+    }
+
+    function clearFeedback(id) {
+      const box = document.getElementById(id);
+      if (!box) return;
+      box.textContent = '';
+      box.className = 'feedback';
     }
 
     function toggleUSIInfo() {
       const info = document.getElementById('usiInfo');
       info.style.display = info.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function clearFieldErrors() {
+      document.querySelectorAll('input, select').forEach(el => el.classList.remove('error-input'));
+    }
+
+    function markError(id) {
+      const element = document.getElementById(id);
+      if (element) element.classList.add('error-input');
     }
 
     function emailFirstLetterFlexibleMatch(input, expected) {
@@ -1355,25 +1140,9 @@
       return input === chars.join('');
     }
 
-    function getSelectedPaymentMethod() {
-      const checked = document.querySelector('input[name="paymentMethod"]:checked');
-      return checked ? checked.value : '';
-    }
-
-    function refreshPaymentSelections() {
-      document.querySelectorAll('.payment-option').forEach(option => option.classList.remove('selected'));
-      document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
-        if (input.checked) input.closest('.payment-option').classList.add('selected');
-      });
-    }
-
-    document.addEventListener('change', (event) => {
-      if (event.target && event.target.name === 'paymentMethod') refreshPaymentSelections();
-    });
-
     function validateEnrolment() {
-      clearAllFeedback();
-      clearHomeFeedback();
+      clearFieldErrors();
+      clearFeedback('formFeedback');
 
       const firstName = document.getElementById('firstName').value.trim();
       const lastName = document.getElementById('lastName').value.trim();
@@ -1384,59 +1153,60 @@
       const email2 = document.getElementById('email2').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const usi = document.getElementById('usi').value.trim();
-      const paymentMethod = getSelectedPaymentMethod();
+      const paymentMethod = document.getElementById('paymentMethod').value;
       const checkEmail = document.getElementById('checkEmail').checked;
       const checkRules = document.getElementById('checkRules').checked;
 
       if (firstName !== 'Shani') {
         markError('firstName');
-        showInlineFeedback('feedback-firstName', 'First name is not correct. Please try again.');
+        showFeedback('formFeedback', 'First name is not correct. Please try again.', 'error');
         return;
       }
       if (lastName !== 'Igwe') {
         markError('lastName');
-        showInlineFeedback('feedback-lastName', 'Last name is not correct. Please try again.');
+        showFeedback('formFeedback', 'Last name is not correct. Please try again.', 'error');
         return;
       }
       if (dobDay !== '04' || dobMonth !== '05' || dobYear !== '1998') {
         markError('dobDay');
         markError('dobMonth');
         markError('dobYear');
-        showInlineFeedback('feedback-dob', 'Date of birth is not correct. Please try again.');
+        showFeedback('formFeedback', 'Date of birth is not correct. Please try again.', 'error');
         return;
       }
       if (!emailFirstLetterFlexibleMatch(email1, 'shani.nk98@gmail.com')) {
         markError('email1');
-        showInlineFeedback('feedback-email1', 'Email address is not correct. Please try again.');
+        showFeedback('formFeedback', 'Email address is not correct. Please try again.', 'error');
         return;
       }
       if (!emailFirstLetterFlexibleMatch(email2, 'shani.nk98@gmail.com')) {
         markError('email2');
-        showInlineFeedback('feedback-email2', 'Please enter the same email address again.');
+        showFeedback('formFeedback', 'Please enter the same email address again.', 'error');
         return;
       }
       if (email1.toLowerCase() !== email2.toLowerCase()) {
         markError('email1');
         markError('email2');
-        showInlineFeedback('feedback-email2', 'Email addresses do not match. Please try again.');
+        showFeedback('formFeedback', 'Email addresses do not match. Please try again.', 'error');
         return;
       }
       if (phone !== '0456 559 469') {
         markError('phone');
-        showInlineFeedback('feedback-phone', 'Mobile phone number is not correct. Please try again.');
+        showFeedback('formFeedback', 'Mobile phone number is not correct. Please try again.', 'error');
         return;
       }
       if (usi.toUpperCase() !== '4K8M7T2R9P') {
         markError('usi');
-        showInlineFeedback('feedback-usi', 'USI number is not correct. Please try again.');
+        showFeedback('formFeedback', 'USI number is not correct. Please try again.', 'error');
         return;
       }
       if (paymentMethod !== 'paypal') {
-        showInlineFeedback('feedback-paymentMethod', 'Shani does not want to use this method. Please choose PayPal.');
+        markError('paymentMethod');
+        showFeedback('formFeedback', 'Shani does not want to use this payment method. Please choose another method.', 'error');
         return;
       }
       if (!checkEmail || !checkRules) {
-        showInlineFeedback('feedback-checks', 'Please tick all boxes.');
+        showFeedback('formFeedback', 'Please tick all boxes.', 'error');
         return;
       }
 
@@ -1444,71 +1214,70 @@
     }
 
     function validatePayPalLogin() {
-      clearAllFeedback();
+      clearFieldErrors();
+      clearFeedback('paypalLoginFeedback');
+
       const email = document.getElementById('paypalEmail').value.trim();
       const password = document.getElementById('paypalPassword').value;
 
       if (!emailFirstLetterFlexibleMatch(email, 'shani.nk98@gmail.com')) {
         markError('paypalEmail');
-        showInlineFeedback('feedback-paypalEmail', 'Email is not correct. Please try again.');
+        showFeedback('paypalLoginFeedback', 'Email is not correct. Please try again.', 'error');
         return;
       }
       if (password !== 'SunnyDay$123') {
         markError('paypalPassword');
-        showInlineFeedback('feedback-paypalPassword', 'Password is not correct. Please try again.');
+        showFeedback('paypalLoginFeedback', 'Password is not correct. Please try again.', 'error');
         return;
       }
 
-      showPage('loadingAfterLoginPage', true);
-    }
-
-    function generateCode() {
-      return String(Math.floor(100000 + Math.random() * 900000));
-    }
-
-    function updateLiveCodeDisplay() {
-      const codeText = document.getElementById('liveCodeText');
-      if (codeText) codeText.textContent = liveCode;
-    }
-
-    function resendCode() {
-      liveCode = generateCode();
-      updateLiveCodeDisplay();
-      document.getElementById('emailCode').value = '';
-      document.getElementById('emailCode').classList.remove('error-input');
-      const fb = document.getElementById('feedback-emailCode');
-      fb.textContent = 'A new code has been sent.';
-      fb.className = 'feedback success';
+      showPage('paypalCodePage', true);
     }
 
     function validateEmailCode() {
-      const codeInput = document.getElementById('emailCode');
-      codeInput.classList.remove('error-input');
-      const fb = document.getElementById('feedback-emailCode');
-      fb.textContent = '';
-      fb.className = 'feedback';
-
-      if (codeInput.value.trim() !== liveCode) {
-        codeInput.classList.add('error-input');
-        fb.textContent = 'Code is not correct. Please try again.';
-        fb.className = 'feedback error';
+      clearFieldErrors();
+      clearFeedback('codeFeedback');
+      const code = document.getElementById('emailCode').value.trim();
+      if (code !== '482761') {
+        markError('emailCode');
+        showFeedback('codeFeedback', 'Code is not correct. Please try again.', 'error');
         return;
       }
-      showPage('paypalPaymentPage', true);
+      showPage('loadingToPaymentPage', true);
     }
 
     function completePayment() {
-      clearAllFeedback();
       showPage('successPage', true);
     }
 
     function downloadReceipt() {
-      const pdfPlaceholder = '%PDF-1.4
-% Mock PDF placeholder for classroom use
-1 0 obj<<>>endobj
-trailer<<>>
-%%EOF';
-      const blob = new Blob([pdfPlaceholder], { type: 'application/pdf' });
+      const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Receipt Placeholder</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 40px; color: #222; }
+    .box { max-width: 700px; margin: 0 auto; border: 1px solid #ccc; padding: 28px; border-radius: 10px; }
+    h1 { margin-top: 0; }
+    .row { margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Volunteer Training Hub</h1>
+    <p><strong>Receipt Placeholder PDF</strong></p>
+    <div class="row">Student name: Shani Igwe</div>
+    <div class="row">Course: First Aid Training</div>
+    <div class="row">Date: Fri, 10 Apr 2026</div>
+    <div class="row">Time: 9:00 am – 12:00 pm</div>
+    <div class="row">Amount paid: $87.00</div>
+    <div class="row">Payment method: PayPal</div>
+    <div class="row">Receipt number: VTH-482761</div>
+  </div>
+</body>
+</html>`;
+      const blob = new Blob([html], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -1526,43 +1295,12 @@ trailer<<>>
 
     function initialisePage() {
       populateDOB();
-      refreshPaymentSelections();
-      liveCode = generateCode();
-      updateLiveCodeDisplay();
       const currentHash = window.location.hash.replace('#', '');
       const startPage = pageOrder.includes(currentHash) ? currentHash : 'homePage';
       history.replaceState({ page: startPage }, '', '#' + startPage);
       showPage(startPage, false);
     }
-<script>
-  function goToPage(pageId) {
-    document.querySelectorAll('.page').forEach(page => {
-      page.classList.remove('active');
-    });
 
-    const nextPage = document.getElementById(pageId);
-    if (nextPage) {
-      nextPage.classList.add('active');
-    }
-
-    const courseBox = document.getElementById('courseFeedback');
-    if (courseBox) {
-      courseBox.className = 'feedback';
-      courseBox.textContent = '';
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function wrongCourse() {
-    const box = document.getElementById('courseFeedback');
-    if (!box) return;
-
-    box.textContent = 'This is not the course Shani needs. Please enrol in the First Aid Course.';
-    box.className = 'feedback error';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-</script>
     initialisePage();
   </script>
 </body>
