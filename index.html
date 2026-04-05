@@ -1534,7 +1534,35 @@ trailer<<>>
       history.replaceState({ page: startPage }, '', '#' + startPage);
       showPage(startPage, false);
     }
+<script>
+  function goToPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
+    });
 
+    const nextPage = document.getElementById(pageId);
+    if (nextPage) {
+      nextPage.classList.add('active');
+    }
+
+    const courseBox = document.getElementById('courseFeedback');
+    if (courseBox) {
+      courseBox.className = 'feedback';
+      courseBox.textContent = '';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function wrongCourse() {
+    const box = document.getElementById('courseFeedback');
+    if (!box) return;
+
+    box.textContent = 'This is not the course Shani needs. Please enrol in the First Aid Course.';
+    box.className = 'feedback error';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
     initialisePage();
   </script>
 </body>
