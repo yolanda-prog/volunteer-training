@@ -107,24 +107,32 @@
   max-width: 1320px;
   margin: 0 auto;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
 }
 
 .brand-wrap {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: center;
+  gap: 18px;
 }
 
 .brand-badge {
-  width: 58px;
-  height: 58px;
-  flex: 0 0 58px;
+  width: 110px;
+  height: 110px;
+  flex: 0 0 110px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
+}
+
+.brand-badge::before,
+.brand-badge::after {
+  content: none !important;
+  display: none !important;
 }
 
 .brand-badge img {
@@ -133,30 +141,12 @@
   object-fit: contain;
   display: block;
 }
-.brand-badge::before,
-.brand-badge::after {
-  content: "";
-  position: absolute;
-  border-radius: 999px;
-}
-
-.brand-badge::before {
-  width: 42px;
-  height: 42px;
-  background: #e84d4d;
-  left: 0;
-  top: 2px;
-  box-shadow:
-    16px 0 0 #f2c94c,
-    8px 16px 0 #6fcf97,
-    8px 32px 0 #5b8bd9;
-}
-
 .brand-title {
   font-size: 28px;
   font-weight: 700;
   color: #1f5f4a;
   letter-spacing: 0;
+    line-height: 1.1;
 }
 
 .brand-subtitle {
@@ -512,32 +502,7 @@
       padding: 26px;
     }
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .summary-card {
-      border: 1px solid var(--border);
-      background: #fbfdff;
-      border-radius: 18px;
-      padding: 16px;
-    }
-
-    .summary-label {
-      font-size: 0.92rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .summary-value {
-      font-size: 1.05rem;
-      font-weight: 700;
-      line-height: 1.45;
-    }
-
+  
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -753,7 +718,71 @@
       border-bottom: 1px solid #ecf1f7;
       font-size: 1rem;
     }
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
 
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 2px solid #a9a9a9;
+  border-radius: 10px;
+  padding: 18px 20px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+}
+
+.payment-option input {
+  position: absolute;
+  opacity: 0;
+}
+
+.radio-circle {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #6f6f6f;
+  border-radius: 50%;
+  flex: 0 0 22px;
+  position: relative;
+}
+
+.payment-option input:checked + .radio-circle {
+  border-color: #2fa052;
+}
+
+.payment-option input:checked + .radio-circle::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #2fa052;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.payment-name {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+}
+
+.placeholder-logo {
+  width: 72px;
+  height: 42px;
+  border-radius: 6px;
+  background: #eceff3;
+  border: 2px solid #c9cdd3;
+  position: relative;
+  flex: 0 0 72px;
+}
     .payment-row:last-child { border-bottom: 0; }
 
     .payment-row span:first-child { color: var(--muted); }
@@ -847,14 +876,6 @@
     <div class="brand-title">Volunteer Training Hub</div>
   </div>
 </div>
-
-
-    <div class="topbar-right">
-      <span>AU</span>
-      <div class="menu-icon" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
   </div>
 </header>
     <main class="content">
@@ -964,27 +985,10 @@
         <div class="panel">
           <div class="panel-header">
             <h2>Training enrolment form</h2>
-            <p>Please enter Shani’s details exactly. Read the instructions carefully before you continue.</p>
+            <p>Please enter your details.</p>
           </div>
           <div class="panel-body">
-            <div class="summary-grid">
-              <div class="summary-card">
-                <div class="summary-label">Course</div>
-                <div class="summary-value">First Aid Training</div>
-              </div>
-              <div class="summary-card">
-                <div class="summary-label">Location</div>
-                <div class="summary-value">Cabramatta, NSW</div>
-              </div>
-              <div class="summary-card">
-                <div class="summary-label">Date &amp; Time</div>
-                <div class="summary-value">Fri, 10 Apr 2026<br>9:00 am – 12:00 pm</div>
-              </div>
-              <div class="summary-card">
-                <div class="summary-label">Price</div>
-                <div class="summary-value">$75.00</div>
-              </div>
-            </div>
+            
 
             <div class="feedback" id="formFeedback"></div>
 
@@ -1031,17 +1035,41 @@
                   <div class="info-box" id="usiInfo">USI = Unique Student Identifier. You need a USI to get your certificate.</div>
                 </div>
 
-                <div class="field full">
-                  <label for="paymentMethod">Payment method</label>
-                  <select id="paymentMethod">
-                    <option value="">Select payment method</option>
-                    <option value="card">Credit / Debit Card</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="applepay">Apple Pay</option>
-                    <option value="googlepay">Google Pay</option>
-                    <option value="bank">Bank Transfer</option>
-                  </select>
-                </div>
+               <div class="field-group">
+  <label class="field-label">Payment method</label>
+
+  <div class="payment-options">
+
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="card">
+      <span class="radio-circle"></span>
+      <span class="payment-name">Card</span>
+      <span class="payment-logo placeholder-logo card-placeholder"></span>
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="applepay">
+      <span class="radio-circle"></span>
+      <span class="payment-name">Apple Pay</span>
+      <span class="payment-logo placeholder-logo apple-placeholder"></span>
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="googlepay">
+      <span class="radio-circle"></span>
+      <span class="payment-name">Google Pay</span>
+      <span class="payment-logo placeholder-logo google-placeholder"></span>
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="paypal">
+      <span class="radio-circle"></span>
+      <span class="payment-name">PayPal</span>
+      <span class="payment-logo placeholder-logo paypal-placeholder"></span>
+    </label>
+
+  </div>
+</div>
 
                 <div class="field full">
                   <label>Course agreement</label>
@@ -1059,7 +1087,7 @@
               </div>
 
               <div class="centered-actions">
-                <button class="btn-primary" type="button" onclick="validateEnrolment()">Continue to PayPal</button>
+                <button class="btn-primary" type="button" onclick="validateEnrolment()">Continue to Pay</button>
               </div>
             </form>
           </div>
