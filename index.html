@@ -1384,7 +1384,7 @@
       const email2 = document.getElementById('email2').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const usi = document.getElementById('usi').value.trim();
-      const paymentMethod = document.getElementById('paymentMethod').value;
+     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
       const checkEmail = document.getElementById('checkEmail').checked;
       const checkRules = document.getElementById('checkRules').checked;
 
