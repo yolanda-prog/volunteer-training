@@ -747,20 +747,23 @@
 .payment-options {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-top: 10px;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  margin: 12px auto 0;
 }
 
 .payment-option {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   border: 2px solid #a9a9a9;
   border-radius: 10px;
-  padding: 18px 20px;
+  padding: 14px 18px;
   background: #fff;
   cursor: pointer;
   position: relative;
+  width: 100%;
 }
 
 .payment-option input {
@@ -800,14 +803,12 @@
   color: #111;
 }
 
-.placeholder-logo {
-  width: 72px;
-  height: 42px;
-  border-radius: 6px;
-  background: #eceff3;
-  border: 2px solid #c9cdd3;
-  position: relative;
-  flex: 0 0 72px;
+.payment-icon {
+  width: 56px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
+  flex: 0 0 56px;
 }
     .payment-row:last-child { border-bottom: 0; }
 
@@ -1066,7 +1067,9 @@
                 </div>
 
                <div class="field-group">
-  <label class="field-label">Payment method</label>
+  <label class="field-label" style="display:block; max-width:520px; margin:0 auto 10px; font-weight:700; font-size:18px;">
+  Payment method
+</label>
 
   <div class="payment-options">
 
