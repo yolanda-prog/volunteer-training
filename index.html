@@ -649,7 +649,27 @@
   color: #777;
   white-space: nowrap;
 }
+.password-wrap {
+  position: relative;
+}
 
+.password-wrap input {
+  padding-right: 90px;
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #1367c8;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
 .resend-link {
   margin-top: 14px;
   background: none;
@@ -1240,9 +1260,14 @@
                 <input id="paypalEmail" type="email" autocomplete="off" />
               </div>
               <div class="field full">
-                <label for="paypalPassword">Password</label>
-                <input id="paypalPassword" type="password" autocomplete="off" />
-              </div>
+  <label for="paypalPassword">Password</label>
+  <div class="password-wrap">
+    <input id="paypalPassword" type="password">
+    <button type="button" class="show-password-btn" onclick="togglePaypalPassword()">
+      Show
+    </button>
+  </div>
+</div>
             </div>
             <div class="centered-actions">
               <button class="btn-primary" type="button" onclick="validatePayPalLogin()">Log In</button>
@@ -1592,7 +1617,19 @@ const stageMap = {
 let currentEmailCode = "";
 let resendSeconds = 0;
 let resendInterval = null;
+    
+function togglePaypalPassword() {
+  const input = document.getElementById('paypalPassword');
+  const button = document.querySelector('.show-password-btn');
 
+  if (input.type === 'password') {
+    input.type = 'text';
+    button.textContent = 'Hide';
+  } else {
+    input.type = 'password';
+    button.textContent = 'Show';
+  }
+}
 function generateEmailCode() {
   currentEmailCode = String(Math.floor(100000 + Math.random() * 900000));
 
