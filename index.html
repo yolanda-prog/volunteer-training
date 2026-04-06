@@ -1435,12 +1435,11 @@ const stageMap = {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showFeedback(id, message, type) {
-      const box = document.getElementById(id);
-      box.textContent = message;
-      box.className = `feedback ${type}`;
-    }
-
+   function showFeedback(id, message, type) {
+  const box = document.getElementById(id);
+  box.innerHTML = message;
+  box.className = `feedback ${type}`;
+}
     function clearFeedback(id) {
       const box = document.getElementById(id);
       if (!box) return;
@@ -1470,78 +1469,98 @@ const stageMap = {
       return input === chars.join('');
     }
 
-    function validateEnrolment() {
-      clearFieldErrors();
-      clearFeedback('formFeedback');
+  function validateEnrolment() {
+  clearFieldErrors();
+  clearFeedback('formFeedback');
 
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const dobDay = document.getElementById('dobDay').value;
-      const dobMonth = document.getElementById('dobMonth').value;
-      const dobYear = document.getElementById('dobYear').value;
-      const email1 = document.getElementById('email1').value.trim();
-      const email2 = document.getElementById('email2').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const usi = document.getElementById('usi').value.trim();
-     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
-      const checkEmail = document.getElementById('checkEmail').checked;
-      const checkRules = document.getElementById('checkRules').checked;
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const dobDay = document.getElementById('dobDay').value;
+  const dobMonth = document.getElementById('dobMonth').value;
+  const dobYear = document.getElementById('dobYear').value;
+  const email1 = document.getElementById('email1').value.trim();
+  const email2 = document.getElementById('email2').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const usi = document.getElementById('usi').value.trim();
+  const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+  const checkEmail = document.getElementById('checkEmail').checked;
+  const checkRules = document.getElementById('checkRules').checked;
 
-      if (firstName !== 'Shani') {
-        markError('firstName');
-        showFeedback('formFeedback', 'First name is not correct. Please try again.', 'error');
-        return;
-      }
-      if (lastName !== 'Igwe') {
-        markError('lastName');
-        showFeedback('formFeedback', 'Last name is not correct. Please try again.', 'error');
-        return;
-      }
-      if (dobDay !== '04' || dobMonth !== '05' || dobYear !== '1998') {
-        markError('dobDay');
-        markError('dobMonth');
-        markError('dobYear');
-        showFeedback('formFeedback', 'Date of birth is not correct. Please try again.', 'error');
-        return;
-      }
-      if (!emailFirstLetterFlexibleMatch(email1, 'shani.nk98@gmail.com')) {
-        markError('email1');
-        showFeedback('formFeedback', 'Email address is not correct. Please try again.', 'error');
-        return;
-      }
-      if (!emailFirstLetterFlexibleMatch(email2, 'shani.nk98@gmail.com')) {
-        markError('email2');
-        showFeedback('formFeedback', 'Please enter the same email address again.', 'error');
-        return;
-      }
-      if (email1.toLowerCase() !== email2.toLowerCase()) {
-        markError('email1');
-        markError('email2');
-        showFeedback('formFeedback', 'Email addresses do not match. Please try again.', 'error');
-        return;
-      }
-      if (phone !== '0456 559 469') {
-        markError('phone');
-        showFeedback('formFeedback', 'Mobile phone number is not correct. Please try again.', 'error');
-        return;
-      }
-      if (usi.toUpperCase() !== '4K8M7T2R9P') {
-        markError('usi');
-        showFeedback('formFeedback', 'USI number is not correct. Please try again.', 'error');
-        return;
-      }
-      if (paymentMethod !== 'paypal') {
-        markError('paymentMethod');
-        showFeedback('formFeedback', 'Shani does not want to use this payment method. Please choose another method.', 'error');
-        return;
-      }
-      if (!checkEmail || !checkRules) {
-        showFeedback('formFeedback', 'Please tick all boxes.', 'error');
-        return;
-      }
+  let errors = [];
+  let nameCapitalError = false;
 
-      showPage('loadingToLoginPage', true);
-    }
+  if (firstName.toLowerCase() !== 'shani') {
+    markError('firstName');
+    errors.push('First name is not correct. Please try again.');
+  } else if (firstName !== 'Shani') {
+    markError('firstName');
+    nameCapitalError = true;
+  }
+
+  if (lastName.toLowerCase() !== 'igwe') {
+    markError('lastName');
+    errors.push('Last name is not correct. Please try again.');
+  } else if (lastName !== 'Igwe') {
+    markError('lastName');
+    nameCapitalError = true;
+  }
+
+  if (dobDay !== '04' || dobMonth !== '05' || dobYear !== '1998') {
+    markError('dobDay');
+    markError('dobMonth');
+    markError('dobYear');
+    errors.push('Date of birth is not correct. Please try again.');
+  }
+
+  if (!emailFirstLetterFlexibleMatch(email1, 'shani.nk98@gmail.com')) {
+    markError('email1');
+    errors.push('Email address is not correct. Please try again.');
+  }
+
+  if (!emailFirstLetterFlexibleMatch(email2, 'shani.nk98@gmail.com')) {
+    markError('email2');
+    errors.push('Please enter the same email address again.');
+  }
+
+  if (
+    emailFirstLetterFlexibleMatch(email1, 'shani.nk98@gmail.com') &&
+    emailFirstLetterFlexibleMatch(email2, 'shani.nk98@gmail.com') &&
+    email1.toLowerCase() !== email2.toLowerCase()
+  ) {
+    markError('email1');
+    markError('email2');
+    errors.push('Email addresses do not match. Please try again.');
+  }
+
+  if (phone !== '0456 559 469') {
+    markError('phone');
+    errors.push('Mobile phone number is not correct. Please try again.');
+  }
+
+  if (usi.toUpperCase() !== '4K8M7T2R9P') {
+    markError('usi');
+    errors.push('USI number is not correct. Please try again.');
+  }
+
+  if (paymentMethod !== 'paypal') {
+    errors.push('Shani does not want to use this payment method. Please choose another method.');
+  }
+
+  if (!checkEmail || !checkRules) {
+    errors.push('Please tick all boxes.');
+  }
+
+  if (nameCapitalError) {
+    errors.push('First letter of names must be capital.');
+  }
+
+  if (errors.length > 0) {
+    showFeedback('formFeedback', errors.join('<br>'), 'error');
+    return;
+  }
+
+  showPage('loadingToLoginPage', true);
+}
 
     function validatePayPalLogin() {
       clearFieldErrors();
