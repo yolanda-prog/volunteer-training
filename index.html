@@ -575,20 +575,89 @@
       width: fit-content;
     }
 
-    .info-box,
-    .code-note {
-      display: none;
-      margin-bottom: 16px;
-      background: #edf6ff;
-      border: 1px solid #d0e5fb;
-      color: var(--text);
-      border-radius: 16px;
-      padding: 13px 15px;
-      line-height: 1.55;
-      font-size: 0.97rem;
-    }
+.info-box {
+  display: none;
+  margin-top: 10px;
+  margin-bottom: 0;
+  background: #edf6ff;
+  border: 1px solid #d0e5fb;
+  color: var(--text);
+  border-radius: 16px;
+  padding: 13px 15px;
+  line-height: 1.55;
+  font-size: 0.97rem;
+}
+    .email-toast {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
 
-    .info-box { margin-top: 10px; margin-bottom: 0; }
+.email-toast-inner {
+  width: min(520px, calc(100% - 32px));
+  background: #fff;
+  border: 1px solid #d7dbe2;
+  border-radius: 18px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.email-toast-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid #d7dbe2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #4a5565;
+  background: #fafafa;
+  flex: 0 0 40px;
+}
+
+.email-toast-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.email-toast-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.email-toast-message {
+  font-size: 0.98rem;
+  line-height: 1.35;
+  color: #222;
+}
+
+.email-toast-time {
+  font-size: 0.95rem;
+  color: #777;
+  white-space: nowrap;
+}
+
+.resend-link {
+  margin-top: 14px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #1367c8;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.resend-link:hover {
+  text-decoration: underline;
+}
 
     .checkboxes {
       display: grid;
@@ -1176,7 +1245,18 @@
             <div class="paypal-sub">Check your email to continue</div>
           </div>
           <div class="paypal-body">
-            <div class="code-note" id="codeNote" style="display:block;">Email note: Your 6-digit code is <strong>482761</strong>.</div>
+           <div class="email-toast" id="codeToast">
+  <div class="email-toast-inner">
+    <div class="email-toast-icon">TZ</div>
+    <div class="email-toast-text">
+      <div class="email-toast-title">TechZone</div>
+      <div class="email-toast-message">
+        The code to verify your email is <strong id="liveCodeText">374397</strong>.
+      </div>
+    </div>
+    <div class="email-toast-time">now</div>
+  </div>
+</div>
             <div class="email-code-box">
               <h3>Email verification</h3>
               <p>Enter the 6-digit code sent to your email.</p>
@@ -1187,6 +1267,7 @@
               </div>
               <div class="centered-actions">
                 <button class="btn-primary" type="button" onclick="validateEmailCode()">Verify code</button>
+                <button class="resend-link" type="button" onclick="resendEmailCode()">Resend code</button>
               </div>
             </div>
           </div>
@@ -1461,21 +1542,38 @@
         showFeedback('paypalLoginFeedback', 'Password is not correct. Please try again.', 'error');
         return;
       }
-
-      showPage('paypalCodePage', true);
+generateEmailCode();
+showPage('paypalCodePage', true);
     }
 
-    function validateEmailCode() {
-      clearFieldErrors();
-      clearFeedback('codeFeedback');
-      const code = document.getElementById('emailCode').value.trim();
-      if (code !== '482761') {
-        markError('emailCode');
-        showFeedback('codeFeedback', 'Code is not correct. Please try again.', 'error');
-        return;
-      }
-      showPage('loadingToPaymentPage', true);
-    }
+   let currentEmailCode = '374397';
+
+function generateEmailCode() {
+  currentEmailCode = String(Math.floor(100000 + Math.random() * 900000));
+  const codeText = document.getElementById('liveCodeText');
+  if (codeText) codeText.textContent = currentEmailCode;
+}
+
+function validateEmailCode() {
+  clearFieldErrors();
+  clearFeedback('codeFeedback');
+
+  const code = document.getElementById('emailCode').value.trim();
+
+  if (code !== currentEmailCode) {
+    markError('emailCode');
+    showFeedback('codeFeedback', 'Code is not correct. Please try again.', 'error');
+    return;
+  }
+
+  showPage('loadingToPaymentPage', true);
+}
+
+function resendEmailCode() {
+  generateEmailCode();
+  document.getElementById('emailCode').value = '';
+  clearFeedback('codeFeedback');
+}
 
     function completePayment() {
       showPage('successPage', true);
