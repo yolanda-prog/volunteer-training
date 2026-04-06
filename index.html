@@ -1562,26 +1562,32 @@ const stageMap = {
   showPage('loadingToLoginPage', true);
 }
 
-    function validatePayPalLogin() {
-      clearFieldErrors();
-      clearFeedback('paypalLoginFeedback');
+   function validatePaypalLogin() {
+  clearFieldErrors();
+  clearFeedback('paypalFeedback');
 
-      const email = document.getElementById('paypalEmail').value.trim();
-      const password = document.getElementById('paypalPassword').value;
+  const email = document.getElementById('paypalEmail').value.trim();
+  const password = document.getElementById('paypalPassword').value.trim();
 
-      if (!emailFirstLetterFlexibleMatch(email, 'shani.nk98@gmail.com')) {
-        markError('paypalEmail');
-        showFeedback('paypalLoginFeedback', 'Email is not correct. Please try again.', 'error');
-        return;
-      }
-      if (password !== 'SunnyDay$123') {
-        markError('paypalPassword');
-        showFeedback('paypalLoginFeedback', 'Password is not correct. Please try again.', 'error');
-        return;
-      }
-generateEmailCode();
-showPage('paypalCodePage', true);
-    }
+  let errors = [];
+
+  if (!emailFirstLetterFlexibleMatch(email, 'shani.nk98@gmail.com')) {
+    markError('paypalEmail');
+    errors.push('Email is not correct. Please try again.');
+  }
+
+  if (password !== 'Volunteer$98') {
+    markError('paypalPassword');
+    errors.push('Password is not correct. Please try again.');
+  }
+
+  if (errors.length > 0) {
+    showFeedback('paypalFeedback', errors.join('<br>'), 'error');
+    return;
+  }
+
+  showPage('paypalCodePage', true);
+}
 
 let currentEmailCode = "";
 let resendSeconds = 0;
