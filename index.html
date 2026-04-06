@@ -587,7 +587,7 @@
   line-height: 1.55;
   font-size: 0.97rem;
 }
-    .email-toast {
+.email-toast {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -657,6 +657,12 @@
 
 .resend-link:hover {
   text-decoration: underline;
+}
+
+.resend-link[disabled] {
+  color: #9aa4b2;
+  cursor: default;
+  text-decoration: none;
 }
 
     .checkboxes {
@@ -1247,11 +1253,11 @@
           <div class="paypal-body">
            <div class="email-toast" id="codeToast">
   <div class="email-toast-inner">
-    <div class="email-toast-icon">TZ</div>
+    <div class="email-toast-icon">VH</div>
     <div class="email-toast-text">
-      <div class="email-toast-title">TechZone</div>
+      <div class="email-toast-title">Volunteer Training Hub</div>
       <div class="email-toast-message">
-        The code to verify your email is <strong id="liveCodeText">374397</strong>.
+        The code to verify your email is <strong id="liveCodeText"></strong>.
       </div>
     </div>
     <div class="email-toast-time">now</div>
@@ -1378,12 +1384,17 @@
     }
 
     function showPage(pageId, pushToHistory = true) {
-      clearPendingTimer();
-      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-      const target = document.getElementById(pageId);
-      if (!target) return;
-      target.classList.add('active');
-      updateSteps(pageId);
+  clearPendingTimer();
+  document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+  const target = document.getElementById(pageId);
+  if (!target) return;
+  target.classList.add('active');
+
+  if (pageId === 'paypalCodePage') {
+    generateEmailCode();
+  }
+
+  updateSteps(pageId);
 
       if (pushToHistory) {
         history.pushState({ page: pageId }, '', '#' + pageId);
@@ -1546,12 +1557,43 @@ generateEmailCode();
 showPage('paypalCodePage', true);
     }
 
-   let currentEmailCode = '374397';
+let currentEmailCode = "";
+let resendSeconds = 0;
+let resendInterval = null;
 
 function generateEmailCode() {
   currentEmailCode = String(Math.floor(100000 + Math.random() * 900000));
+
   const codeText = document.getElementById('liveCodeText');
-  if (codeText) codeText.textContent = currentEmailCode;
+  if (codeText) {
+    codeText.textContent = currentEmailCode;
+  }
+
+  startResendTimer();
+}
+
+function startResendTimer() {
+  const resendBtn = document.querySelector('#paypalCodePage .resend-link');
+
+  resendSeconds = 20;
+
+  if (resendInterval) clearInterval(resendInterval);
+
+  resendBtn.disabled = true;
+  resendBtn.textContent = `Resend code (${resendSeconds}s)`;
+
+  resendInterval = setInterval(() => {
+    resendSeconds--;
+
+    if (resendSeconds > 0) {
+      resendBtn.textContent = `Resend code (${resendSeconds}s)`;
+    } else {
+      clearInterval(resendInterval);
+      resendInterval = null;
+      resendBtn.disabled = false;
+      resendBtn.textContent = 'Resend code';
+    }
+  }, 1000);
 }
 
 function validateEmailCode() {
@@ -1562,7 +1604,7 @@ function validateEmailCode() {
 
   if (code !== currentEmailCode) {
     markError('emailCode');
-    showFeedback('codeFeedback', 'Code is not correct. Please try again.', 'error');
+    showFeedback('codeFeedback', 'The code is not correct. Please try again.', 'error');
     return;
   }
 
@@ -1570,11 +1612,12 @@ function validateEmailCode() {
 }
 
 function resendEmailCode() {
+  if (resendSeconds > 0) return;
+
   generateEmailCode();
   document.getElementById('emailCode').value = '';
-  clearFeedback('codeFeedback');
+  showFeedback('codeFeedback', 'A new code has been sent.', 'success');
 }
-
     function completePayment() {
       showPage('successPage', true);
     }
@@ -1631,6 +1674,7 @@ function resendEmailCode() {
     }
 
     initialisePage();
+    
   </script>
 </body>
 </html>
