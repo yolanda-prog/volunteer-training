@@ -1672,15 +1672,38 @@ function resendEmailCode() {
       showPage(pageId, false);
     });
 
-    function initialisePage() {
-      populateDOB();
-      const currentHash = window.location.hash.replace('#', '');
-      const startPage = pageOrder.includes(currentHash) ? currentHash : 'homePage';
-      history.replaceState({ page: startPage }, '', '#' + startPage);
-      showPage(startPage, false);
-    }
+  function initialisePage() {
+  populateDOB();
 
-    initialisePage();
+  const currentHash = window.location.hash.replace('#', '');
+  const startPage = pageOrder.includes(currentHash) ? currentHash : 'homePage';
+
+  const pageHistoryMap = {
+    homePage: ['homePage'],
+    enrolPage: ['homePage', 'enrolPage'],
+    paypalLoginPage: ['homePage', 'enrolPage', 'paypalLoginPage'],
+    paypalCodePage: ['homePage', 'enrolPage', 'paypalLoginPage', 'paypalCodePage'],
+    paypalPaymentPage: ['homePage', 'enrolPage', 'paypalLoginPage', 'paypalCodePage', 'paypalPaymentPage'],
+    successPage: ['homePage', 'enrolPage', 'paypalLoginPage', 'paypalCodePage', 'paypalPaymentPage', 'successPage']
+  };
+
+  const historyPages = pageHistoryMap[startPage] || ['homePage'];
+
+  history.replaceState({ page: historyPages[0] }, '', '#' + historyPages[0]);
+
+  for (let i = 1; i < historyPages.length; i++) {
+    history.pushState({ page: historyPages[i] }, '', '#' + historyPages[i]);
+  }
+
+  showPage(startPage, false);
+}
+
+window.addEventListener('popstate', function () {
+  const page = window.location.hash.replace('#', '') || 'homePage';
+  showPage(page, false);
+});
+
+initialisePage();
     
   </script>
 </body>
