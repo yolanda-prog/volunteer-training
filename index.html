@@ -727,6 +727,23 @@
       border-bottom: 1px solid #ecf1f7;
       font-size: 1rem;
     }
+ .payment-review {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 8px;
+    }
+
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid #ecf1f7;
+      font-size: 1rem;
+    }
 .payment-options {
   display: flex;
   flex-direction: column;
@@ -792,6 +809,10 @@
   position: relative;
   flex: 0 0 72px;
 }
+    .payment-row:last-child { border-bottom: 0; }
+
+    .payment-row span:first-child { color: var(--muted); }
+    .payment-row strong { text-align: right; }
     .payment-row:last-child { border-bottom: 0; }
 
     .payment-row span:first-child { color: var(--muted); }
@@ -1049,34 +1070,41 @@
 
   <div class="payment-options">
 
-    <label class="payment-option">
-      <input type="radio" name="paymentMethod" value="card">
-      <span class="radio-circle"></span>
-      <span class="payment-name">Card</span>
-      <span class="credit-card (1).png"></span>
-    </label>
+ <label class="payment-option">
+  <div class="payment-option-left">
+    <input type="radio" name="paymentMethod" value="card">
+    <span class="radio-circle"></span>
+    <span class="payment-name">Card</span>
+  </div>
+  <img src="credit-card (1).png" alt="Card" class="payment-icon">
+</label>
 
-    <label class="payment-option">
-      <input type="radio" name="paymentMethod" value="applepay">
-      <span class="radio-circle"></span>
-      <span class="payment-name">Apple Pay</span>
-      <span class="apple-pay (1).png"></span>
-    </label>
+<label class="payment-option">
+  <div class="payment-option-left">
+    <input type="radio" name="paymentMethod" value="applepay">
+    <span class="radio-circle"></span>
+    <span class="payment-name">Apple Pay</span>
+  </div>
+  <img src="apple-pay (1).png" alt="Apple Pay" class="payment-icon">
+</label>
 
-    <label class="payment-option">
-      <input type="radio" name="paymentMethod" value="googlepay">
-      <span class="radio-circle"></span>
-      <span class="payment-name">Google Pay</span>
-      <span class="google-pay (1).png"></span>
-    </label>
+<label class="payment-option">
+  <div class="payment-option-left">
+    <input type="radio" name="paymentMethod" value="googlepay">
+    <span class="radio-circle"></span>
+    <span class="payment-name">Google Pay</span>
+  </div>
+  <img src="google-pay (1).png" alt="Google Pay" class="payment-icon">
+</label>
 
-    <label class="payment-option">
-      <input type="radio" name="paymentMethod" value="paypal">
-      <span class="radio-circle"></span>
-      <span class="payment-name">PayPal</span>
-      <span class="paypal.png"></span>
-    </label>
-
+<label class="payment-option">
+  <div class="payment-option-left">
+    <input type="radio" name="paymentMethod" value="paypal">
+    <span class="radio-circle"></span>
+    <span class="payment-name">PayPal</span>
+  </div>
+  <img src="paypal.png" alt="PayPal" class="payment-icon">
+</label>
   </div>
 </div>
 
